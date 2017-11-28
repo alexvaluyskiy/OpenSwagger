@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml.XPath;
@@ -115,11 +116,10 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Annotations
 
         private XmlCommentsOperationFilter Subject()
         {
-            var xmlComments = GetType().GetTypeInfo()
-                .Assembly
-                .GetManifestResourceStream("Swashbuckle.AspNetCore.SwaggerGen.Test.TestFixtures.XmlComments.xml");
-
-            return new XmlCommentsOperationFilter(new XPathDocument(xmlComments));
+            using (var xmlComments = File.OpenText(GetType().GetTypeInfo().Assembly.GetName().Name + ".xml"))
+            {
+                return new XmlCommentsOperationFilter(new XPathDocument(xmlComments));
+            }
         }
     }
 }
