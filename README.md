@@ -1,5 +1,7 @@
 # OpenAPI 3 for ASP.NET Core
 
+[![Build status](https://ci.appveyor.com/api/projects/status/7834y6i56alqgi7y/branch/master?svg=true)](https://ci.appveyor.com/project/ravengerUA/openswagger/branch/master)
+
 ## OpenSwagger Core Features:
 - Auto-generated OpenAPI 3.0
 - Seamless integration of swagger-ui

@@ -75,6 +75,23 @@ Task("Test")
   }
 });
 
+Task("Package-NuGet")
+  .Description("Generates NuGet packages for each project that contains a nuspec")
+  .Does(() =>
+{
+  var settings = new DotNetCorePackSettings {
+    Configuration = configuration,
+    OutputDirectory = outputNuGet,
+    ArgumentCustomization = args => args.Append("--include-symbols").Append("-s").Append("--no-build")
+  };
+
+  foreach(var project in csProjectFiles)
+  {
+    DotNetCorePack(project.GetDirectory().FullPath, settings);
+  }
+
+});
+
 Task("Default")
   .IsDependentOn("Test"); 
 
