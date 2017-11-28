@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Middleware to expose an embedded version of the swagger-ui 3 from an ASP.NET Core application</Description>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AssemblyName>OpenSwagger.SwaggerUI</AssemblyName>
+    <PackageId>OpenSwagger.SwaggerUI</PackageId>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <PackageTags>openapi;swagger;documentation;swaggerui</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="bower_components\swagger-ui\dist\**\*.png" />
+    <EmbeddedResource Include="bower_components\swagger-ui\dist\**\*.html" />
+    <EmbeddedResource Include="bower_components\swagger-ui\dist\**\*.css" />
+    <EmbeddedResource Include="bower_components\swagger-ui\dist\**\swagger-ui-bundle.js;bower_components\swagger-ui\dist\**\swagger-ui-standalone-preset.js" />
+    <EmbeddedResource Include="Template\index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Routing" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OpenSwagger.AspNetCore\OpenSwagger.AspNetCore.csproj" />
+  </ItemGroup>
+
+</Project>
