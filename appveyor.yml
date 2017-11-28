@@ -1,0 +1,21 @@
+# configuration for "master" branch
+- 
+  branches:
+    only:
+      - master
+  image: Visual Studio 2017
+  platform: Any CPU
+  configuration: Release
+  build_script:
+  - ps: ./build.ps1 -target Compile
+  test_script:
+  - ps: ./build.ps1 -target Test
+  artifacts:
+  - path: build/nuget/*.nupkg
+    name: nuget
+  deploy:
+    provider: NuGet
+    api_key:
+      secure: HasnovdVw/qO3yQPSPdHZwC2GOg5KJVvT8eAwAxuW2wUTgr5lgOdZJNc46RTZ4ng
+    skip_symbols: false
+    artifact: /.*\.nupkg/
