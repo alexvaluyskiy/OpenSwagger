@@ -1,3 +1,5 @@
+#addin "Cake.Bower"
+
 // Usings
 using System.Xml;
 using System.Xml.Linq;
@@ -43,6 +45,8 @@ Task("Restore")
   .Description("Restores dependencies")
   .Does(() =>
 {
+  Bower.Install(s => s.UseWorkingDirectory("./src/OpenSwagger.SwaggerUI"));
+
   DotNetCoreRestore("./OpenSwagger.sln", new DotNetCoreRestoreSettings
   {
     NoCache = true,
