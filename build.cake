@@ -1,10 +1,5 @@
 #addin "Cake.Bower"
 
-// Usings
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
-
 // Arguments
 var target = Argument<string>("target", "Default");
 var source = Argument<string>("source", null);
