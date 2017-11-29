@@ -19,3 +19,28 @@
       secure: HasnovdVw/qO3yQPSPdHZwC2GOg5KJVvT8eAwAxuW2wUTgr5lgOdZJNc46RTZ4ng
     skip_symbols: false
     artifact: /.*\.nupkg/
+
+# configuration for all branches starting from "dev"
+- 
+  branches:
+    only:
+      - dev
+  image: Visual Studio 2017
+  platform: Any CPU
+  configuration: Release
+  build_script:
+  - npm install -g bower
+  - ps: ./build.ps1 -target Compile
+  test_script:
+  - ps: ./build.ps1 -target Package-NuGet
+  artifacts:
+  - path: build/nuget/*.nupkg
+    name: nuget
+  deploy:
+    provider: NuGet
+    server: https://www.myget.org/F/openswagger/api/v2/package
+    api_key:
+      secure: oC2sjz2Dnd7PM0eRLdwhZbOH6y06PLf9Pb9HYv4ujm/fRxgGw3KWZ3mtxmnHt+zv
+    skip_symbols: false
+    symbol_server: https://www.myget.org/F/openswagger/symbols/api/v2/package
+    artifact: /.*\.nupkg/

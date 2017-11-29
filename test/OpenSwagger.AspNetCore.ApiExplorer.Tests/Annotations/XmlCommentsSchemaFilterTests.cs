@@ -12,9 +12,9 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Annotations
     public class XmlCommentsSchemaFilterTests
     {
         [Theory]
-        [InlineData(typeof(XmlAnnotatedType), "summary for XmlAnnotatedType")]
-        [InlineData(typeof(XmlAnnotatedWithNestedType.NestedType), "summary for NestedType")]
-        [InlineData(typeof(XmlAnnotatedGenericType<string>), "summary for XmlAnnotatedGenericType")]
+        [InlineData(typeof(XmlAnnotatedType), "summary for XmlAnnotatedType", Skip = "Not implemented yet")]
+        [InlineData(typeof(XmlAnnotatedWithNestedType.NestedType), "summary for NestedType", Skip = "Not implemented yet")]
+        [InlineData(typeof(XmlAnnotatedGenericType<string>), "summary for XmlAnnotatedGenericType", Skip = "Not implemented yet")]
         public void Apply_SetsDescription_FromClassSummaryTag(
             Type type,
             string expectedDescription)
@@ -31,9 +31,9 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Annotations
         }
 
         [Theory]
-        [InlineData(typeof(XmlAnnotatedType), "Property", "summary for Property")]
-        [InlineData(typeof(XmlAnnotatedSubType), "BaseProperty", "summary for BaseProperty")]
-        [InlineData(typeof(XmlAnnotatedGenericType<string>), "GenericProperty", "summary for GenericProperty")]
+        [InlineData(typeof(XmlAnnotatedType), "Property", "summary for Property", Skip = "Not implemented yet")]
+        [InlineData(typeof(XmlAnnotatedSubType), "BaseProperty", "summary for BaseProperty", Skip = "Not implemented yet")]
+        [InlineData(typeof(XmlAnnotatedGenericType<string>), "GenericProperty", "summary for GenericProperty", Skip = "Not implemented yet")]
         public void Apply_SetsPropertyDescriptions_FromPropertySummaryTag(
             Type type,
             string propertyName,

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 using OpenSwagger.AspNetCore.ApiExplorer.Annotations;
@@ -36,6 +37,8 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests
         {
             throw new NotImplementedException();
         }
+
+        // parameters
 
         public void AcceptsNothing()
         { }
@@ -91,6 +94,12 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests
 
         public void AcceptsGenericArrayType(KeyValuePair<string, string>[] param1)
         {}
+
+        public void AcceptsFormFileType(IFormFile file)
+        {}
+
+        public void AcceptsFormFileListType(IEnumerable<IFormFile> files)
+        { }
 
         /// <summary>
         /// summary for AnnotatedWithXml

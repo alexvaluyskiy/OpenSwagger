@@ -25,6 +25,25 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             //Assert.Contains("ComplexType", swagger.Components.Definitions.Keys);
         }
 
+
+        [Fact(Skip = "Not implemented yet")]
+        public void GetSwagger_GeneratesParameters_ForFormFile()
+        {
+            var routeTemplate = "collection";
+            var actionFixtureName = nameof(FakeActions.AcceptsFormFileType);
+            var subject = Subject(setupApis: apis => apis.Add("POST", routeTemplate, actionFixtureName));
+
+            var swagger = subject.GetSwagger("v1");
+
+            var operation = swagger.Paths["/" + routeTemplate].Post;
+            Assert.NotNull(operation);
+            Assert.NotNull(operation.RequestBody);
+            Assert.True(operation.RequestBody.Content.ContainsKey("multipart/form-data"));
+            var content = operation.RequestBody.Content["multipart/form-data"];
+            Assert.NotNull(content.Schema);
+            //Assert.Equal("#/components/schemas/ComplexType", content.Schema.Ref);
+        }
+
         private SwaggerGenerator Subject(
             Action<FakeApiDescriptionGroupCollectionProvider> setupApis = null,
             Action<SwaggerGeneratorSettings> configure = null)
