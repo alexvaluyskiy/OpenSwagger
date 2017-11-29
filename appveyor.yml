@@ -29,9 +29,9 @@
   platform: Any CPU
   configuration: Release
   build_script:
+  - npm install -g bower
   - ps: ./build.ps1 -target Compile
   test_script:
-  - ps: ./build.ps1 -target Test
   - ps: ./build.ps1 -target Package-NuGet
   artifacts:
   - path: build/nuget/*.nupkg
