@@ -43,7 +43,11 @@ Task("Restore")
   .Description("Restores dependencies")
   .Does(() =>
 {
-  DotNetCoreRestore("./OpenSwagger.sln");
+  DotNetCoreRestore("./OpenSwagger.sln", new DotNetCoreRestoreSettings
+  {
+    NoCache = true,
+    Runtime = "win-x64"
+  });
 });
 
 Task("Compile")
@@ -82,7 +86,8 @@ Task("Package-NuGet")
   var settings = new DotNetCorePackSettings {
     Configuration = configuration,
     OutputDirectory = outputNuGet,
-    ArgumentCustomization = args => args.Append("--include-symbols").Append("-s").Append("--no-build")
+    IncludeSymbols = true,
+    IncludeSource = true
   };
 
   foreach(var project in csProjectFiles)
