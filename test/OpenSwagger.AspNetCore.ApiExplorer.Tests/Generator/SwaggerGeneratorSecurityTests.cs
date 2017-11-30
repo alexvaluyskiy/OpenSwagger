@@ -19,7 +19,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
                 Description = "Basic HTTP Authentication",
             };
 
-            var subject = Subject(configure: c =>
+            var subject = SwaggerTestHelper.Subject(configure: c =>
                 c.SecurityDefinitions.Add(securitySchemeName, securityScheme));
 
             var swagger = subject.GetSwagger("v1");
@@ -44,7 +44,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
                 Description = "Bearer HTTP Authentication",
             };
 
-            var subject = Subject(configure: c =>
+            var subject = SwaggerTestHelper.Subject(configure: c =>
                 c.SecurityDefinitions.Add(securitySchemeName, securityScheme));
 
             var swagger = subject.GetSwagger("v1");
@@ -69,7 +69,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
                 In = "header"
             };
 
-            var subject = Subject(configure: c =>
+            var subject = SwaggerTestHelper.Subject(configure: c =>
             {
                 c.SecurityDefinitions.Add(securitySchemeName, securityScheme);
                 c.GlobalSecurity.Add(securitySchemeName, new List<string>());
@@ -111,7 +111,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
                 }
             };
 
-            var subject = Subject(configure: c =>
+            var subject = SwaggerTestHelper.Subject(configure: c =>
             {
                 c.SecurityDefinitions.Add(securitySchemeName, securityScheme);
             });
@@ -145,7 +145,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
                 OpenIdConnectUrl = "https://example.com/.well-known/openid-configuration",
             };
 
-            var subject = Subject(configure: c =>
+            var subject = SwaggerTestHelper.Subject(configure: c =>
                 c.SecurityDefinitions.Add(securitySchemeName, securityScheme));
 
             var swagger = subject.GetSwagger("v1");
@@ -169,7 +169,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
                 In = "header"
             };
 
-            var subject = Subject(configure: c =>
+            var subject = SwaggerTestHelper.Subject(configure: c =>
             {
                 c.SecurityDefinitions.Add(securitySchemeName, securityScheme);
                 c.GlobalSecurity.Add("ApiKeyAuth", new List<string>());
@@ -201,7 +201,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
                 }
             };
 
-            var subject = Subject(configure: c =>
+            var subject = SwaggerTestHelper.Subject(configure: c =>
             {
                 c.SecurityDefinitions.Add(securitySchemeName, securityScheme);
                 c.GlobalSecurity.Add(securitySchemeName, new List<string>
@@ -214,25 +214,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             swagger.Components.SecuritySchemes.Keys.Should().Contain(securitySchemeName);
             swagger.Security.Should().ContainKey(securitySchemeName);
             swagger.Security[securitySchemeName].Should().BeEmpty();
-        }
-
-        private SwaggerGenerator Subject(
-            Action<FakeApiDescriptionGroupCollectionProvider> setupApis = null,
-            Action<SwaggerGeneratorSettings> configure = null)
-        {
-            var apiDescriptionsProvider = new FakeApiDescriptionGroupCollectionProvider();
-            setupApis?.Invoke(apiDescriptionsProvider);
-
-            var options = new SwaggerGeneratorSettings();
-            options.SwaggerDocs.Add("v1", new Info { Title = "API", Version = "v1" });
-
-            configure?.Invoke(options);
-
-            return new SwaggerGenerator(
-                apiDescriptionsProvider,
-                new SchemaRegistryFactory(new JsonSerializerSettings(), new SchemaRegistrySettings()),
-                options
-            );
         }
     }
 }

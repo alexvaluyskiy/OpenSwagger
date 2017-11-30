@@ -16,7 +16,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             string expectedStatusCode,
             string expectedDescriptions)
         {
-            var subject = Subject(setupApis: apis =>
+            var subject = SwaggerTestHelper.Subject(setupApis: apis =>
                 apis.Add("GET", "collection", actionFixtureName));
 
             var swagger = subject.GetSwagger("v1");
@@ -37,7 +37,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             string expectedStatusCode,
             string expectedDescriptions)
         {
-            var subject = Subject(setupApis: apis =>
+            var subject = SwaggerTestHelper.Subject(setupApis: apis =>
                 apis.Add("GET", "collection", actionFixtureName));
 
             var swagger = subject.GetSwagger("v1");
@@ -54,7 +54,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_GeneratesResponsesFromResponseTypeAttributes_IfResponseTypeAttributesPresent()
         {
-            var subject = Subject(setupApis: apis =>
+            var subject = SwaggerTestHelper.Subject(setupApis: apis =>
                 apis.Add("GET", "collection", nameof(FakeActions.AnnotatedWithResponseTypeAttributes)));
 
             var swagger = subject.GetSwagger("v1");
@@ -75,7 +75,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //[Fact]
         //public void GetSwagger_GeneratesResponsesFromSwaggerResponseAttributes_IfResponseAttributesPresent()
         //{
-        //    var subject = Subject(setupApis: apis =>
+        //    var subject = SwaggerTestHelper.Subject(setupApis: apis =>
         //        apis.Add("GET", "collection", nameof(FakeActions.AnnotatedWithSwaggerResponseAttributes)));
 
         //    var swagger = subject.GetSwagger("v1");
@@ -92,24 +92,5 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //    Assert.NotNull(responseContent2);
         //    Assert.NotNull(responseContent2.Schema);
         //}
-
-        private SwaggerGenerator Subject(
-            Action<FakeApiDescriptionGroupCollectionProvider> setupApis = null,
-            Action<SwaggerGeneratorSettings> configure = null)
-        {
-            var apiDescriptionsProvider = new FakeApiDescriptionGroupCollectionProvider();
-            setupApis?.Invoke(apiDescriptionsProvider);
-
-            var options = new SwaggerGeneratorSettings();
-            options.SwaggerDocs.Add("v1", new Info { Title = "API", Version = "v1" });
-
-            configure?.Invoke(options);
-
-            return new SwaggerGenerator(
-                apiDescriptionsProvider,
-                new SchemaRegistryFactory(new JsonSerializerSettings(), new SchemaRegistrySettings()),
-                options
-            );
-        }
     }
 }

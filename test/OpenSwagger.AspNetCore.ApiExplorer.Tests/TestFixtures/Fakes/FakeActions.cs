@@ -64,12 +64,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests
         public void AcceptsStringFromHeader([FromHeader]string param)
         { }
 
-        public void AcceptsStringFromForm([FromForm]string param)
-        { }
-
-        public void AcceptsComplexTypeFromBody([FromBody]ComplexType param)
-        { }
-
         public void AcceptsUnboundStringParameter(string param)
         { }
 
@@ -95,11 +89,21 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests
         public void AcceptsGenericArrayType(KeyValuePair<string, string>[] param1)
         {}
 
+        public void AcceptsStringFromForm([FromForm]string param)
+        { }
+
+        public void AcceptsComplexTypeFromBody([FromBody]ComplexType param)
+        { }
+
         public void AcceptsFormFileType(IFormFile file)
         {}
 
         public void AcceptsFormFileListType(IEnumerable<IFormFile> files)
-        { }
+        {}
+
+        [Consumes("application/custom")]
+        public void AcceptsComplexTypeWithConsumes([FromBody]ComplexType param)
+        {}
 
         /// <summary>
         /// summary for AnnotatedWithXml

@@ -10,7 +10,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_TagsActions_AsSpecifiedBySettings()
         {
-            var subject = Subject(
+            var subject = SwaggerTestHelper.Subject(
                 setupApis: apis =>
                 {
                     apis.Add("GET", "collection1", nameof(FakeActions.ReturnsEnumerable));
@@ -33,7 +33,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             string expectedOperationId
         )
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", routeTemplate, nameof(FakeActions.AcceptsNothing)));
 
             var swagger = subject.GetSwagger("v1");
@@ -44,32 +44,13 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_SetsDeprecated_IfActionsMarkedObsolete()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "collection", nameof(FakeActions.MarkedObsolete)));
 
             var swagger = subject.GetSwagger("v1");
 
             var operation = swagger.Paths["/collection"].Get;
             Assert.True(operation.Deprecated);
-        }
-
-        private SwaggerGenerator Subject(
-            Action<FakeApiDescriptionGroupCollectionProvider> setupApis = null,
-            Action<SwaggerGeneratorSettings> configure = null)
-        {
-            var apiDescriptionsProvider = new FakeApiDescriptionGroupCollectionProvider();
-            setupApis?.Invoke(apiDescriptionsProvider);
-
-            var options = new SwaggerGeneratorSettings();
-            options.SwaggerDocs.Add("v1", new Info { Title = "API", Version = "v1" });
-
-            configure?.Invoke(options);
-
-            return new SwaggerGenerator(
-                apiDescriptionsProvider,
-                new SchemaRegistryFactory(new JsonSerializerSettings(), new SchemaRegistrySettings()),
-                options
-            );
         }
     }
 }

@@ -12,7 +12,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_RequiresTargetDocumentToBeSpecifiedBySettings()
         {
-            var subject = Subject(configure: (c) => c.SwaggerDocs.Clear());
+            var subject = SwaggerTestHelper.Subject(configure: (c) => c.SwaggerDocs.Clear());
 
             Assert.Throws<UnknownSwaggerDocument>(() => subject.GetSwagger("v1"));
         }
@@ -23,7 +23,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             var v1Info = new Info { Version = "v2", Title = "API V2" };
             var v2Info = new Info { Version = "v1", Title = "API V1" };
 
-            var subject = Subject(
+            var subject = SwaggerTestHelper.Subject(
                 setupApis: apis =>
                 {
                     apis.Add("GET", "v1/collection", nameof(FakeActions.ReturnsEnumerable));
@@ -49,7 +49,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_GeneratesPathItem_PerRelativePathSansQueryString()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "collection1", nameof(FakeActions.ReturnsEnumerable))
                 .Add("GET", "collection1/{id}", nameof(FakeActions.ReturnsComplexType))
                 .Add("GET", "collection2", nameof(FakeActions.AcceptsStringFromQuery))
@@ -72,7 +72,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //[Fact]
         //public void GetSwagger_GeneratesOperation_PerHttpMethodPerRelativePathSansQueryString()
         //{
-        //    var subject = Subject(setupApis: apis => apis
+        //    var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
         //        .Add("GET", "collection", nameof(FakeActions.ReturnsEnumerable))
         //        .Add("PUT", "collection/{id}", nameof(FakeActions.AcceptsComplexTypeFromBody))
         //        .Add("POST", "collection", nameof(FakeActions.AcceptsComplexTypeFromBody))
@@ -114,11 +114,11 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //    Assert.Empty(operation.Produces.ToArray());
         //    Assert.Null(operation.Deprecated);
         //}
-        
+
         [Fact]
         public void GetSwagger_IgnoresObsoleteActions_IfSpecifiedBySettings()
         {
-            var subject = Subject(
+            var subject = SwaggerTestHelper.Subject(
                 setupApis: apis =>
                 {
                     apis.Add("GET", "collection1", nameof(FakeActions.ReturnsEnumerable));
@@ -134,7 +134,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_OrdersActions_AsSpecifiedBySettings()
         {
-            var subject = Subject(
+            var subject = SwaggerTestHelper.Subject(
                 setupApis: apis =>
                 {
                     apis.Add("GET", "B", nameof(FakeActions.ReturnsVoid));
@@ -155,7 +155,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //[Fact]
         //public void GetSwagger_ExecutesOperationFilters_IfSpecifiedBySettings()
         //{
-        //    var subject = Subject(
+        //    var subject = SwaggerTestHelper.Subject(
         //        setupApis: apis =>
         //        {
         //            apis.Add("GET", "collection", nameof(FakeActions.ReturnsEnumerable));
@@ -174,7 +174,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //[Fact]
         //public void GetSwagger_ExecutesDocumentFilters_IfSpecifiedBySettings()
         //{
-        //    var subject = Subject(configure: opts =>
+        //    var subject = SwaggerTestHelper.Subject(configure: opts =>
         //        opts.DocumentFilters.Add(new VendorExtensionsDocumentFilter()));
 
         //    var swagger = subject.GetSwagger("v1");
@@ -185,7 +185,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_HandlesUnboundRouteParams()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "{version}/collection", nameof(FakeActions.AcceptsNothing)));
 
             var swagger = subject.GetSwagger("v1");
@@ -198,7 +198,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_ThrowsInformativeException_IfHttpMethodAttributeNotPresent()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add(null, "collection", nameof(FakeActions.AcceptsNothing)));
 
             var exception = Assert.Throws<NotSupportedException>(() => subject.GetSwagger("v1"));
@@ -211,7 +211,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_ThrowsInformativeException_IfHttpMethodAndPathAreOverloaded()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "collection", nameof(FakeActions.AcceptsNothing))
                 .Add("GET", "collection", nameof(FakeActions.AcceptsStringFromQuery))
             );
@@ -223,25 +223,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
                 "OpenSwagger.AspNetCore.ApiExplorer.Tests.FakeControllers+NotAnnotated.AcceptsStringFromQuery (OpenSwagger.AspNetCore.ApiExplorer.Tests). " +
                 "Actions require unique method/path combination for Swagger",
                 exception.Message);
-        }
-
-        private SwaggerGenerator Subject(
-            Action<FakeApiDescriptionGroupCollectionProvider> setupApis = null,
-            Action<SwaggerGeneratorSettings> configure = null)
-        {
-            var apiDescriptionsProvider = new FakeApiDescriptionGroupCollectionProvider();
-            setupApis?.Invoke(apiDescriptionsProvider);
-
-            var options = new SwaggerGeneratorSettings();
-            options.SwaggerDocs.Add("v1", new Info { Title = "API", Version = "v1" });
-
-            configure?.Invoke(options);
-
-            return new SwaggerGenerator(
-                apiDescriptionsProvider,
-                new SchemaRegistryFactory(new JsonSerializerSettings(), new SchemaRegistrySettings()),
-                options
-            );
         }
     }
 }

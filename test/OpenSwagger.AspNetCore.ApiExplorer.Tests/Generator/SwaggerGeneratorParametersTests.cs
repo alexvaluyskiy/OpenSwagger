@@ -11,7 +11,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_SetsParametersToNull_ForParameterlessActions()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "collection", nameof(FakeActions.AcceptsNothing)));
 
             var swagger = subject.GetSwagger("v1");
@@ -29,7 +29,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             string actionFixtureName,
             ParameterLocation expectedIn)
         {
-            var subject = Subject(setupApis: apis => apis.Add("GET", routeTemplate, actionFixtureName));
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis.Add("GET", routeTemplate, actionFixtureName));
 
             var swagger = subject.GetSwagger("v1");
 
@@ -44,7 +44,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_SetsStyleFormAndExplodeTrue_ForQueryBoundArrayParams()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "resource", nameof(FakeActions.AcceptsArrayFromQuery)));
 
             var swagger = subject.GetSwagger("v1");
@@ -57,7 +57,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_GeneratesQueryParams_ForAllUnboundParams()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "collection", nameof(FakeActions.AcceptsUnboundStringParameter))
                 .Add("POST", "collection", nameof(FakeActions.AcceptsUnboundComplexParameter)));
 
@@ -75,7 +75,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [InlineData("collection/{param?}")]
         public void GetSwagger_SetsParameterRequired_ForAllRouteParams(string routeTemplate)
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", routeTemplate, nameof(FakeActions.AcceptsStringFromRoute)));
 
             var swagger = subject.GetSwagger("v1");
@@ -90,7 +90,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         public void GetSwagger_SetsParameterRequired_ForNonNullableActionParams(
             string actionFixtureName, bool expectedRequired)
         {
-            var subject = Subject(setupApis: apis => apis.Add("GET", "collection", actionFixtureName));
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis.Add("GET", "collection", actionFixtureName));
 
             var swagger = subject.GetSwagger("v1");
 
@@ -105,7 +105,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         public void GetSwagger_SetsParameterRequired_ForNonNullableOrExplicitlyRequiredPropertyBasedParams(
             string paramName, bool expectedRequired)
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "collection", nameof(FakeActions.AcceptsComplexTypeFromQuery)));
 
             var swagger = subject.GetSwagger("v1");
@@ -118,7 +118,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //[Fact]
         //public void GetSwagger_SetsParameterTypeString_ForUnboundRouteParams()
         //{
-        //    var subject = Subject(setupApis: apis => apis
+        //    var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
         //        .Add("GET", "collection/{param}", nameof(FakeActions.AcceptsNothing)));
 
         //    var swagger = subject.GetSwagger("v1");
@@ -133,7 +133,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_IgnoresParameters_IfPartOfCancellationToken()
         {
-            var subject = Subject(setupApis: apis => apis
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("GET", "collection", nameof(FakeActions.AcceptsCancellationToken)));
 
             var swagger = subject.GetSwagger("v1");
@@ -145,7 +145,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         [Fact]
         public void GetSwagger_DescribesParametersInCamelCase_IfSpecifiedBySettings()
         {
-            var subject = Subject(
+            var subject = SwaggerTestHelper.Subject(
                 setupApis: apis => apis.Add("GET", "collection", nameof(FakeActions.AcceptsComplexTypeFromQuery)),
                 configure: c => c.DescribeAllParametersInCamelCase = true
             );
@@ -159,25 +159,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             Assert.Equal("property3", operation.Parameters[2].Name);
             Assert.Equal("property4", operation.Parameters[3].Name);
             Assert.Equal("property5", operation.Parameters[4].Name);
-        }
-
-        private SwaggerGenerator Subject(
-            Action<FakeApiDescriptionGroupCollectionProvider> setupApis = null,
-            Action<SwaggerGeneratorSettings> configure = null)
-        {
-            var apiDescriptionsProvider = new FakeApiDescriptionGroupCollectionProvider();
-            setupApis?.Invoke(apiDescriptionsProvider);
-
-            var options = new SwaggerGeneratorSettings();
-            options.SwaggerDocs.Add("v1", new Info { Title = "API", Version = "v1" });
-
-            configure?.Invoke(options);
-
-            return new SwaggerGenerator(
-                apiDescriptionsProvider,
-                new SchemaRegistryFactory(new JsonSerializerSettings(), new SchemaRegistrySettings()),
-                options
-            );
         }
     }
 }
