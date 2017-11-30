@@ -1,7 +1,4 @@
-// Usings
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.XPath;
+#addin "Cake.Bower"
 
 // Arguments
 var target = Argument<string>("target", "Default");
@@ -43,7 +40,13 @@ Task("Restore")
   .Description("Restores dependencies")
   .Does(() =>
 {
-  DotNetCoreRestore("./OpenSwagger.sln");
+  Bower.Install(s => s.UseWorkingDirectory("./src/OpenSwagger.SwaggerUI"));
+
+  DotNetCoreRestore("./OpenSwagger.sln", new DotNetCoreRestoreSettings
+  {
+    NoCache = true,
+    Runtime = "win-x64"
+  });
 });
 
 Task("Compile")
@@ -82,7 +85,8 @@ Task("Package-NuGet")
   var settings = new DotNetCorePackSettings {
     Configuration = configuration,
     OutputDirectory = outputNuGet,
-    ArgumentCustomization = args => args.Append("--include-symbols").Append("-s").Append("--no-build")
+    IncludeSymbols = true,
+    IncludeSource = true
   };
 
   foreach(var project in csProjectFiles)
