@@ -78,7 +78,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //        .Add("POST", "collection", nameof(FakeActions.AcceptsComplexTypeFromBody))
         //        .Add("DELETE", "collection/{id}", nameof(FakeActions.ReturnsVoid))
         //        .Add("PATCH", "collection/{id}", nameof(FakeActions.AcceptsComplexTypeFromBody))
-        //        // TODO: OPTIONS & HEAD
+        //    // TODO: OPTIONS & HEAD
         //    );
 
         //    var swagger = subject.GetSwagger("v1");
@@ -86,7 +86,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         //    // GET collection
         //    var operation = swagger.Paths["/collection"].Get;
         //    Assert.NotNull(operation);
-        //    Assert.Empty(operation.Consumes);
+        //    Assert.Empty(operation.Parameters.Consumes);
         //    Assert.Equal(new[] { "application/json", "text/json" }, operation.Produces.ToArray());
         //    Assert.Null(operation.Deprecated);
         //    // PUT collection/{id}

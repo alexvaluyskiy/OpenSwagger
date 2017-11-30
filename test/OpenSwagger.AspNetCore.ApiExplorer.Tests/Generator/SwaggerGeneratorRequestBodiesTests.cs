@@ -127,7 +127,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
         }
 
         [Fact(Skip = "Not supported by ASP.NET Core")]
-        public void GetSwagger_GeneratesRequestBody_WithCustomMediaType()
+        public void GetSwagger_GeneratesRequestBody_WithCustomContentType()
         {
             var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
                 .Add("POST", "collection", nameof(FakeActions.AcceptsComplexTypeWithConsumes)));

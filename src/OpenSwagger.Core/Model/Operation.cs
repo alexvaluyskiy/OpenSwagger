@@ -25,7 +25,7 @@ namespace OpenSwagger.Core.Model
 
         public bool? Deprecated { get; set; }
 
-        public SecurityScheme Security { get; set; }
+        public IDictionary<string, IEnumerable<string>> Security { get; set; }
 
         public IEnumerable<Server> Servers { get; set; }
     }

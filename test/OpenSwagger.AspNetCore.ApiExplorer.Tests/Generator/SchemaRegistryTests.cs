@@ -269,27 +269,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             Assert.Null(schema.Properties);
         }
 
-        //[Theory]
-        //[InlineData(typeof(int))]
-        //[InlineData(typeof(IDictionary<string, string>))]
-        //[InlineData(typeof(int[]))]
-        //[InlineData(typeof(ComplexType))]
-        //[InlineData(typeof(object))]
-        //public void GetOrRegister_SupportsOptionToPostModifyAllInlineSchemas(Type systemType)
-        //{
-        //    var subject = Subject(c =>
-        //        c.SchemaFilters.Add(new VendorExtensionsSchemaFilter())
-        //    );
-
-        //    var schemaOrRef = subject.GetOrRegister(systemType);
-
-        //    var schema = (schemaOrRef.Ref == null)
-        //        ? schemaOrRef
-        //        : subject.Definitions[schemaOrRef.Ref.Replace("#/definitions/", "")];
-
-        //    Assert.True(schema.Extensions.ContainsKey("X-property1"));
-        //}
-
         [Fact]
         public void GetOrRegister_SupportsOptionToIgnoreObsoleteProperties()
         {

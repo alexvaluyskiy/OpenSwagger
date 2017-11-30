@@ -115,20 +115,20 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             Assert.Equal(expectedRequired, param.Required);
         }
 
-        //[Fact]
-        //public void GetSwagger_SetsParameterTypeString_ForUnboundRouteParams()
-        //{
-        //    var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
-        //        .Add("GET", "collection/{param}", nameof(FakeActions.AcceptsNothing)));
+        [Fact(Skip = "Not implemented yet")]
+        public void GetSwagger_SetsParameterTypeString_ForUnboundRouteParams()
+        {
+            var subject = SwaggerTestHelper.Subject(setupApis: apis => apis
+                .Add("GET", "collection/{param}", nameof(FakeActions.AcceptsNothing)));
 
-        //    var swagger = subject.GetSwagger("v1");
+            var swagger = subject.GetSwagger("v1");
 
-        //    var param = swagger.Paths["/collection/{param}"].Get.Parameters.First();
-        //    Assert.IsAssignableFrom<Parameter>(param);
-        //    Assert.Equal("param", param.Name);
-        //    Assert.Equal(ParameterLocation.Path, param.In);
-        //    Assert.Equal("string", param.Schema.Type);
-        //}
+            var param = swagger.Paths["/collection/{param}"].Get.Parameters.First();
+            Assert.IsAssignableFrom<Parameter>(param);
+            Assert.Equal("param", param.Name);
+            Assert.Equal(ParameterLocation.Path, param.In);
+            Assert.Equal("string", param.Schema.Type);
+        }
 
         [Fact]
         public void GetSwagger_IgnoresParameters_IfPartOfCancellationToken()

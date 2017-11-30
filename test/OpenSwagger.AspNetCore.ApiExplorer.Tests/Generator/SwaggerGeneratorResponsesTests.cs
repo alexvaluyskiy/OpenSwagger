@@ -72,25 +72,25 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             Assert.NotNull(responseContent2.Schema);
         }
 
-        //[Fact]
-        //public void GetSwagger_GeneratesResponsesFromSwaggerResponseAttributes_IfResponseAttributesPresent()
-        //{
-        //    var subject = SwaggerTestHelper.Subject(setupApis: apis =>
-        //        apis.Add("GET", "collection", nameof(FakeActions.AnnotatedWithSwaggerResponseAttributes)));
+        [Fact(Skip = "Not implemented yet")]
+        public void GetSwagger_GeneratesResponsesFromSwaggerResponseAttributes_IfResponseAttributesPresent()
+        {
+            var subject = SwaggerTestHelper.Subject(setupApis: apis =>
+                apis.Add("GET", "collection", nameof(FakeActions.AnnotatedWithSwaggerResponseAttributes)));
 
-        //    var swagger = subject.GetSwagger("v1");
+            var swagger = subject.GetSwagger("v1");
 
-        //    var responses = swagger.Paths["/collection"].Get.Responses;
-        //    Assert.Equal(new[] { "204", "400" }, responses.Keys.ToArray());
-        //    var response1 = responses["204"];
-        //    Assert.Equal("No content is returned.", response1.Description);
-        //    Assert.Equal(0, response1.Content.Count);
+            var responses = swagger.Paths["/collection"].Get.Responses;
+            Assert.Equal(new[] { "204", "400" }, responses.Keys.ToArray());
+            var response1 = responses["204"];
+            Assert.Equal("No content is returned.", response1.Description);
+            Assert.Equal(0, response1.Content.Count);
 
-        //    var response2 = responses["400"];
-        //    Assert.Equal("This returns a dictionary.", response2.Description);
-        //    var responseContent2 = response2.Content["application/json"];
-        //    Assert.NotNull(responseContent2);
-        //    Assert.NotNull(responseContent2.Schema);
-        //}
+            var response2 = responses["400"];
+            Assert.Equal("This returns a dictionary.", response2.Description);
+            var responseContent2 = response2.Content["application/json"];
+            Assert.NotNull(responseContent2);
+            Assert.NotNull(responseContent2.Schema);
+        }
     }
 }

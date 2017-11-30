@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Newtonsoft.Json;
 using OpenSwagger.AspNetCore.ApiExplorer.Annotations;
+using Xunit;
 
 namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Annotations
 {
@@ -9,9 +10,9 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Annotations
         //[Fact]
         //public void Apply_AssignsProperties_FromActionAttribute()
         //{
-        //    var operation = new Operation
+        //    var operation = new Core.Model.Operation
         //    {
-        //        OperationId = "foobar" 
+        //        OperationId = "foobar"
         //    };
         //    var filterContext = FilterContextFor(nameof(FakeActions.AnnotatedWithSwaggerOperation));
 
