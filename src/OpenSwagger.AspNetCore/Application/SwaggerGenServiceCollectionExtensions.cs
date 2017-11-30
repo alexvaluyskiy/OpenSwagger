@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddOpenSwagger(
             this IServiceCollection services,
-            Action<SwaggerGenOptions> setupAction)
+            Action<OpenSwaggerOptions> setupAction)
         {
             services.Configure<MvcOptions>(c =>
                 c.Conventions.Add(new SwaggerApplicationConvention()));
@@ -24,14 +24,14 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void ConfigureSwaggerGen(
             this IServiceCollection services,
-            Action<SwaggerGenOptions> setupAction)
+            Action<OpenSwaggerOptions> setupAction)
         {
             services.Configure(setupAction);
         }
 
         private static ISwaggerProvider CreateSwaggerProvider(IServiceProvider serviceProvider)
         {
-            var swaggerGenOptions = serviceProvider.GetRequiredService<IOptions<SwaggerGenOptions>>().Value;
+            var swaggerGenOptions = serviceProvider.GetRequiredService<IOptions<OpenSwaggerOptions>>().Value;
             return swaggerGenOptions.CreateSwaggerProvider(serviceProvider);
         }
     }

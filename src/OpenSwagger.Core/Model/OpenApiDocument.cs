@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 
 namespace OpenSwagger.Core.Model
 {
-    public class OpenApiDocument
+    public sealed class OpenApiDocument
     {
         public string OpenApi { get; } = "3.0.0";
 
@@ -14,8 +15,7 @@ namespace OpenSwagger.Core.Model
 
         public Components Components { get; set; }
 
-        // TODO: wrong type
-        public object Security { get; set; }
+        public IDictionary<string, IEnumerable<string>> Security { get; set; }
 
         public IEnumerable<Tag> Tags { get; set; }
 

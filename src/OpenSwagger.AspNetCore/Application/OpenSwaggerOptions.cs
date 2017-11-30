@@ -12,7 +12,7 @@ using OpenSwagger.Core.Model;
 
 namespace OpenSwagger.AspNetCore.Application
 {
-    public class SwaggerGenOptions
+    public class OpenSwaggerOptions
     {
         private readonly SwaggerGeneratorSettings _swaggerGeneratorSettings;
         private readonly SchemaRegistrySettings _schemaRegistrySettings;
@@ -28,7 +28,7 @@ namespace OpenSwagger.AspNetCore.Application
             public object[] Arguments;
         }
 
-        public SwaggerGenOptions()
+        public OpenSwaggerOptions()
         {
             _swaggerGeneratorSettings = new SwaggerGeneratorSettings();
             _schemaRegistrySettings = new SchemaRegistrySettings();
@@ -110,6 +110,18 @@ namespace OpenSwagger.AspNetCore.Application
         {
             _swaggerGeneratorSettings.SecurityDefinitions.Add(name, securityScheme);
         }
+
+        public void AddGlobalSecurity(string name, IEnumerable<string> scopes = null)
+        {
+            if (scopes == null)
+            {
+                _swaggerGeneratorSettings.GlobalSecurity.Add(name, new List<string>());
+            }
+            else
+            {
+                _swaggerGeneratorSettings.GlobalSecurity.Add(name, new List<string>(scopes));
+            }
+         }
 
         /// <summary>
         /// Provide a custom mapping, for a given type, to the Swagger-flavored JSONSchema

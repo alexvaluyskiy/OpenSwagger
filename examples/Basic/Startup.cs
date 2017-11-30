@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -48,6 +49,15 @@ namespace Basic
                 //c.OperationFilter<FormDataOperationFilter>();
 
                 //c.DescribeAllParametersInCamelCase();
+
+                c.AddGlobalSecurity("ApiKeyAuth", new List<string>() { "scope1", "scope2" });
+
+                c.AddSecurityDefinition("ApiKeyAuth", new ApiKeySecurityScheme
+                {
+                    Description = "API Key Authentication",
+                    Name = "X-API-Key",
+                    In = "header"
+                });
             });
 
             if (_hostingEnv.IsDevelopment())
