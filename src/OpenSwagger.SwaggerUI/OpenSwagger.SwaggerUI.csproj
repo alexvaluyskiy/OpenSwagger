@@ -8,7 +8,7 @@
     <AssemblyName>OpenSwagger.SwaggerUI</AssemblyName>
     <PackageId>OpenSwagger.SwaggerUI</PackageId>
     <VersionPrefix>0.1.0</VersionPrefix>
-    <PackageTags>openapi;swagger;documentation;swaggerui</PackageTags>
+    <PackageTags>openapi;swagger;documentation;aspnetcore;swaggerui</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
