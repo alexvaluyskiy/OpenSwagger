@@ -72,7 +72,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             var subject = SwaggerTestHelper.Subject(configure: c =>
             {
                 c.SecurityDefinitions.Add(securitySchemeName, securityScheme);
-                c.GlobalSecurity.Add(securitySchemeName, new List<string>());
             });
 
             var swagger = subject.GetSwagger("v1");
@@ -84,9 +83,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             scheme.Description.Should().Be(securityScheme.Description);
             scheme.Name.Should().Be(securityScheme.Name);
             scheme.In.Should().Be(securityScheme.In);
-
-            swagger.Security.Should().ContainKey(securitySchemeName);
-            swagger.Security[securitySchemeName].Should().HaveCount(0);
         }
 
         [Fact]
@@ -96,7 +92,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             var securityScheme = new OAuth2SecurityScheme
             {
                 Description = "OAuth2 Authorization Code Grant",
-                Flow = new Dictionary<string, OAuth2SecurityScheme.OAuth2Flow>
+                Flows = new Dictionary<string, OAuth2SecurityScheme.OAuth2Flow>
                 {
                     ["authorizationCode"] = new OAuth2SecurityScheme.AuthorizationCode
                     {
@@ -123,10 +119,10 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             scheme.Should().NotBeNull();
             scheme.Type.Should().Be(securityScheme.Type);
             scheme.Description.Should().Be(securityScheme.Description);
-            scheme.Flow.Should().ContainKey("authorizationCode");
-            scheme.Flow["authorizationCode"].Should().BeOfType<OAuth2SecurityScheme.AuthorizationCode>();
+            scheme.Flows.Should().ContainKey("authorizationCode");
+            scheme.Flows["authorizationCode"].Should().BeOfType<OAuth2SecurityScheme.AuthorizationCode>();
 
-            var authorizationCode = (OAuth2SecurityScheme.AuthorizationCode)scheme.Flow["authorizationCode"];
+            var authorizationCode = (OAuth2SecurityScheme.AuthorizationCode)scheme.Flows["authorizationCode"];
             authorizationCode.AuthorizationUrl.Should().Be("https://tempuri.org/auth");
             authorizationCode.TokenUrl.Should().Be("https://tempuri.org/token");
             authorizationCode.Scopes.Keys.Should().ContainInOrder("read", "write");
@@ -156,64 +152,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests.Generator
             scheme.Type.Should().Be("openIdConnect");
             scheme.Description.Should().Be(securityScheme.Description);
             scheme.OpenIdConnectUrl.Should().Be(securityScheme.OpenIdConnectUrl);
-        }
-
-        [Fact(Skip = "Security scheme matching is not implemented yet")]
-        public void GetSwagger_SkipGenerateGlobalSecurity_IfNoSecuritySchemeMatched()
-        {
-            var securitySchemeName = "ApiKeyAuth";
-            var securityScheme = new ApiKeySecurityScheme
-            {
-                Description = "API Key Authentication",
-                Name = "X-API-Key",
-                In = "header"
-            };
-
-            var subject = SwaggerTestHelper.Subject(configure: c =>
-            {
-                c.SecurityDefinitions.Add(securitySchemeName, securityScheme);
-                c.GlobalSecurity.Add("ApiKeyAuth", new List<string>());
-            });
-
-            var swagger = subject.GetSwagger("v1");
-            swagger.Components.SecuritySchemes.Keys.Should().Contain(securitySchemeName);
-            swagger.Security.Should().BeEmpty();
-        }
-
-        [Fact(Skip = "Security scheme's scopes matching is not implemented yet")]
-        public void GetSwagger_SkipGenerateGlobalSecurityScopes_IfNoScopesMatched()
-        {
-            var securitySchemeName = "OAuth2";
-            var securityScheme = new OAuth2SecurityScheme
-            {
-                Description = "OAuth2 Authorization Code Grant",
-                Flow = new Dictionary<string, OAuth2SecurityScheme.OAuth2Flow>
-                {
-                    ["authorizationCode"] = new OAuth2SecurityScheme.AuthorizationCode
-                    {
-                        AuthorizationUrl = "https://tempuri.org/auth",
-                        TokenUrl = "https://tempuri.org/token",
-                        Scopes = new Dictionary<string, string>
-                        {
-                            ["read"] = "Read access to protected resources",
-                        },
-                    }
-                }
-            };
-
-            var subject = SwaggerTestHelper.Subject(configure: c =>
-            {
-                c.SecurityDefinitions.Add(securitySchemeName, securityScheme);
-                c.GlobalSecurity.Add(securitySchemeName, new List<string>
-                {
-                    "write"
-                });
-            });
-
-            var swagger = subject.GetSwagger("v1");
-            swagger.Components.SecuritySchemes.Keys.Should().Contain(securitySchemeName);
-            swagger.Security.Should().ContainKey(securitySchemeName);
-            swagger.Security[securitySchemeName].Should().BeEmpty();
         }
     }
 }

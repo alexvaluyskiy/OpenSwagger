@@ -3,7 +3,7 @@ using OpenSwagger.Core.Model;
 
 namespace Basic.Swagger
 {
-    public class AddCartsByIdGetExternalDocs : IOperationFilter
+    public class OperationExternalDocsOperationFilter : IOperationFilter
     {
        public void Apply(Operation operation, OperationFilterContext context)
        {

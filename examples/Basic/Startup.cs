@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using OpenSwagger.Core.Model;
 using System.IO;
+using Basic.Swagger;
 
 namespace Basic
 {
@@ -50,14 +51,25 @@ namespace Basic
 
                 //c.DescribeAllParametersInCamelCase();
 
-                c.AddGlobalSecurity("ApiKeyAuth", new List<string>() { "scope1", "scope2" });
-
-                c.AddSecurityDefinition("ApiKeyAuth", new ApiKeySecurityScheme
+                c.AddSecurityDefinition("OAuth2", new OAuth2SecurityScheme
                 {
-                    Description = "API Key Authentication",
-                    Name = "X-API-Key",
-                    In = "header"
+                    Description = "OAuth2 Authorization Code Grant",
+                    Flows = new Dictionary<string, OAuth2SecurityScheme.OAuth2Flow>
+                    {
+                        ["authorizationCode"] = new OAuth2SecurityScheme.AuthorizationCode
+                        {
+                            AuthorizationUrl = "https://tempuri.org/auth",
+                            TokenUrl = "https://tempuri.org/token",
+                            Scopes = new Dictionary<string, string>
+                            {
+                                ["read"] = "Read access to protected resources",
+                                ["write"] = "Write access to protected resources",
+                            },
+                        }
+                    }
                 });
+
+                c.DocumentFilter<GlobalSecurityDocumentFilter>();
             });
 
             if (_hostingEnv.IsDevelopment())

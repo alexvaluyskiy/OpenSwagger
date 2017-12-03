@@ -1,8 +1,8 @@
 {
-  "name": "swashbuckle",
+  "name": "openapi",
   "private": true,
   "dependencies": {
-    "swagger-ui": "3.5.0"
+    "swagger-ui": "3.6.0"
   },
   "exportsOverride": {
   }

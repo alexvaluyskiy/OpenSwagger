@@ -63,6 +63,6 @@ namespace OpenSwagger.Core.Model
         /// <summary>
         /// An object containing configuration information for the flow types supported.
         /// </summary>
-        public IDictionary<string, OAuth2Flow> Flow { get; set; }
+        public IDictionary<string, OAuth2Flow> Flows { get; set; }
     }
 }

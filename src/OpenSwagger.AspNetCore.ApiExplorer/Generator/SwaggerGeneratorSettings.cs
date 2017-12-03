@@ -14,7 +14,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
             TagSelector = (apiDesc) => apiDesc.ControllerName();
             SortKeySelector = (apiDesc) => TagSelector(apiDesc);
             SecurityDefinitions = new Dictionary<string, SecurityScheme>();
-            GlobalSecurity = new Dictionary<string, IEnumerable<string>>();
             OperationFilters = new List<IOperationFilter>();
             DocumentFilters = new List<IDocumentFilter>();
         }
@@ -33,8 +32,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
 
         public IDictionary<string, SecurityScheme> SecurityDefinitions { get; private set; }
 
-        public IDictionary<string, IEnumerable<string>> GlobalSecurity { get; set; }
-
         public IList<IOperationFilter> OperationFilters { get; private set; }
 
         public IList<IDocumentFilter> DocumentFilters { get; private set; }
@@ -50,7 +47,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
                 SortKeySelector = SortKeySelector,
                 DescribeAllParametersInCamelCase = DescribeAllParametersInCamelCase,
                 SecurityDefinitions = SecurityDefinitions,
-                GlobalSecurity = GlobalSecurity,
                 OperationFilters = OperationFilters,
                 DocumentFilters = DocumentFilters
             };

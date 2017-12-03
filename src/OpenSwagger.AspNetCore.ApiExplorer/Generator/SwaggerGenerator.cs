@@ -52,7 +52,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
             };
 
             var components = GetComponents(_settings.SecurityDefinitions, schemaRegistry);
-            var globalSecurity = _settings.GlobalSecurity;
 
             var swaggerDoc = new OpenApiDocument
             {
@@ -60,7 +59,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
                 Servers = servers,
                 Components = components,
                 Paths = paths,
-                Security = globalSecurity
             };
 
             var filterContext = new DocumentFilterContext(

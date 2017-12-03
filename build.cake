@@ -82,9 +82,14 @@ Task("Package-NuGet")
   .Description("Generates NuGet packages for each project that contains a nuspec")
   .Does(() =>
 {
+  var envBuildNumber = Argument("APPVEYOR_BUILD_NUMBER", "0");
+  var branch = Argument("APPVEYOR_REPO_BRANCH", "");
+  var versionSuffix = branch.Equals("dev") ? string.Format("beta{0}", envBuildNumber) : "";
+
   var settings = new DotNetCorePackSettings {
     Configuration = configuration,
     OutputDirectory = outputNuGet,
+	VersionSuffix = versionSuffix,
     IncludeSymbols = true,
     IncludeSource = true
   };

@@ -111,18 +111,6 @@ namespace OpenSwagger.AspNetCore.Application
             _swaggerGeneratorSettings.SecurityDefinitions.Add(name, securityScheme);
         }
 
-        public void AddGlobalSecurity(string name, IEnumerable<string> scopes = null)
-        {
-            if (scopes == null)
-            {
-                _swaggerGeneratorSettings.GlobalSecurity.Add(name, new List<string>());
-            }
-            else
-            {
-                _swaggerGeneratorSettings.GlobalSecurity.Add(name, new List<string>(scopes));
-            }
-         }
-
         /// <summary>
         /// Provide a custom mapping, for a given type, to the Swagger-flavored JSONSchema
         /// </summary>

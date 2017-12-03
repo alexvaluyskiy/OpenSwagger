@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 
 namespace OpenSwagger.Core.Model
 {
-    public class Parameter
+    public sealed class Parameter
     {
         public string Name { get; set; }
 

@@ -5,7 +5,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
 {
     public interface IDocumentFilter
     {
-        void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context);
+        void Apply(OpenApiDocument openApiDocument, DocumentFilterContext context);
     }
 
     public class DocumentFilterContext
