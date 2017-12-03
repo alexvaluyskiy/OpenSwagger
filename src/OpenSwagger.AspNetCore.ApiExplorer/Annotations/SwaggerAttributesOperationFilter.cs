@@ -25,9 +25,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Annotations
 
             if (attribute.Tags != null)
                 operation.Tags = attribute.Tags;
-
-            //if (attribute.Schemes != null)
-            //    operation.Schemes = attribute.Schemes;
         }
 
         public static void ApplyOperationFilterAttributes(Operation operation, OperationFilterContext context)

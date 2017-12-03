@@ -13,8 +13,5 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Annotations
         public string OperationId { get; set; }
 
         public string[] Tags { get; set; }
-
-        // TODO: remove it
-        public string[] Schemes { get; set; }
     }
 }

@@ -142,10 +142,6 @@ namespace OpenSwagger.AspNetCore.ApiExplorer.Tests
             throw new NotImplementedException();
         }
 
-        [SwaggerOperation("CustomOperationId", Tags = new[] { "customTag" }, Schemes = new[] { "customScheme" })]
-        public void AnnotatedWithSwaggerOperation()
-        { }
-
         [SwaggerResponse(204, typeof(void), "No content is returned.")]
         [SwaggerResponse(400, typeof(IDictionary<string, string>), "This returns a dictionary.")]
         public IActionResult AnnotatedWithSwaggerResponseAttributes()

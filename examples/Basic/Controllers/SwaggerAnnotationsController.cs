@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Basic.Swagger;
 using OpenSwagger.AspNetCore.ApiExplorer.Annotations;
 
 namespace Basic.Controllers
 {
-    public class SwaggerAnnotationsController
+    public class SwaggerAnnotationsController : Controller
     {
         [SwaggerOperation("CreateCart", Tags = new []{ "a", "b" })]
         [HttpPost("/carts")]
@@ -34,6 +36,14 @@ namespace Basic.Controllers
             return "servers";
         }
 
+        [HttpGet("/carts/description")]
+        [SwaggerResponse(200, Type = typeof(int), Description = "Cart received")]
+        [SwaggerResponse(404, Type = typeof(IDictionary<string, string>), Description = "Cart not found")]
+        public ActionResult Create(int id)
+        {
+            return Ok("description");
+        }
+
         [HttpGet("/carts/examples")]
         [SwaggerOperationFilter(typeof(ResponseExamplesOperationFilter))]
         public string Example(int id)
@@ -53,6 +63,14 @@ namespace Basic.Controllers
         public string Links(int id)
         {
             return "links";
+        }
+
+        [HttpGet("/carts/files")]
+        [SwaggerOperationFilter(typeof(ResponseFilesOperationFilter))]
+        public ActionResult Files(int id)
+        {
+            var file = new byte[] { 5, 6, 7, 8, 3 };
+            return File(file, "application/octet-stream");
         }
     }
 
