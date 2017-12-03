@@ -140,7 +140,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
         private Operation CreateOperation(ApiDescription apiDescription, ISchemaRegistry schemaRegistry)
         {
             var parameters = apiDescription.ParameterDescriptions
-                .Where(paramDesc => paramDesc.Source != BindingSource.Body && paramDesc.Source != BindingSource.Form)
+                .Where(IsParameter)
                 .Where(paramDesc => paramDesc.Source.IsFromRequest && !paramDesc.IsPartOfCancellationToken())
                 .Select(paramDesc => CreateParameter(apiDescription, paramDesc, schemaRegistry))
                 .ToList();
@@ -176,7 +176,7 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
         private RequestBody CreateRequestBody(ApiDescription apiDescription, ISchemaRegistry schemaRegistry)
         {
             var bodyParameter = apiDescription.ParameterDescriptions
-                .FirstOrDefault(paramDesc => paramDesc.Source == BindingSource.Body || paramDesc.Source == BindingSource.Form);
+                .FirstOrDefault(IsRequestBody);
 
             if (bodyParameter == null)
                 return null;
@@ -299,5 +299,20 @@ namespace OpenSwagger.AspNetCore.ApiExplorer
             { "4\\d{2}", "Client Error" },
             { "5\\d{2}", "Server Error" }
         };
+
+        private bool IsParameter(ApiParameterDescription parameterDescription)
+        {
+            return parameterDescription.Source == BindingSource.Path 
+                || parameterDescription.Source == BindingSource.Query
+                || parameterDescription.Source == BindingSource.ModelBinding
+                || parameterDescription.Source == BindingSource.Header;
+        }
+
+        private bool IsRequestBody(ApiParameterDescription parameterDescription)
+        {
+            return parameterDescription.Source == BindingSource.Body 
+                || parameterDescription.Source == BindingSource.Form 
+                || parameterDescription.Source.Id.Equals("FormFile");
+        }
     }
 }
