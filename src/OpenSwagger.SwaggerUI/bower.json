@@ -1,9 +1,0 @@
-{
-  "name": "openapi",
-  "private": true,
-  "dependencies": {
-    "swagger-ui": "3.6.0"
-  },
-  "exportsOverride": {
-  }
-}

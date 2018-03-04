@@ -6,7 +6,7 @@ namespace Basic.Controllers
 {
     [Route("/products")]
     [Produces("application/json")]
-    public class CrudActionsController
+    public class CrudActionsController : Controller
     {
         /// <summary>
         /// Creates a <paramref name="product"/>
