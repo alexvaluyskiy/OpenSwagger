@@ -135,22 +135,17 @@ namespace OpenSwagger.Readers.AspNetCore.Generator
                 return new OpenApiSchema
                 {
                     Type = "string",
-                    //Enum = (camelCase)
-                    //    ? Enum.GetNames(type).Select(name => name.ToCamelCase()).ToList()
-                    //    : Enum.GetNames(type).ToList()
+                    Enum = camelCase
+                        ? Enum.GetNames(type).Select(name => new OpenApiString(name.ToCamelCase())).ToArray()
+                        : Enum.GetNames(type).Select(name => new OpenApiString(name)).ToArray()
                 };
             }
-
-            var values = Enum.GetValues(type).Cast<object>().ToArray().Select(c =>
-            {
-                return (IOpenApiAny) new OpenApiInteger(int.Parse(c.ToString()));
-            }).ToList();
 
             return new OpenApiSchema
             {
                 Type = "integer",
                 Format = "int32",
-                Enum = values
+                Enum = Enum.GetValues(type).Cast<int>().Select(c => new OpenApiInteger(c)).ToArray()
             };
         }
 
